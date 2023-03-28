@@ -14,12 +14,35 @@ $start.addEventListener('click', function () {
         alert("Você já iniciou a gravação, clique em STOP ou reinicie a pagina, caso a falha persista limpe o cache do seu navegador.")
         return;
     } else {
-        StartRec();
         gravando = true;
+        StartRec().then((_) => {
+
+
+            let sec = 0;
+            let min = 0;
+            const $timer = document.querySelector("#timer");
+
+            const timer = setInterval(function () {
+                if (!gravando) { clearInterval(timer); }
+                if (pause) { return; }
+
+                $timer.innerHTML = `${formaterTimer(min)} : ${(formaterTimer(sec))}`
+
+                min = sec >= 60 ? min + 1 : min;
+                sec = sec < 60 ? sec + 1 : 0;
+
+            }, 1000);
+        })
     }
 
     atualizaStatus();
 });
+
+//Mantem o timer com 2 digitos sempre
+function formaterTimer(n) {
+    return n > 9 ? n : "0" + n;
+}
+
 
 $stop.addEventListener('click', function () {
     if (!gravando) {
@@ -48,13 +71,13 @@ $pause.addEventListener('click', function () {
     atualizaStatus();
 })
 
-function atualizaStatus(){
+function atualizaStatus() {
 
     let stt = " ";
-    if(gravando){
+    if (gravando) {
         stt = "Gravando";
 
-        if(pause){
+        if (pause) {
             stt = "Gravação Pausada"
         }
     }
