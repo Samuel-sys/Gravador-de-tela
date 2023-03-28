@@ -4,6 +4,8 @@ const $start = document.querySelector("#start");
 const $pause = document.querySelector("#pause");
 const $stop = document.querySelector("#stop");
 
+const $status = document.querySelector('#status');
+
 let gravando = false; //controle para informar se está ou não gravando o sistema
 let pause = false; //controle para informar se a gravação está pausada ou não
 
@@ -15,6 +17,8 @@ $start.addEventListener('click', function () {
         StartRec();
         gravando = true;
     }
+
+    atualizaStatus();
 });
 
 $stop.addEventListener('click', function () {
@@ -25,6 +29,8 @@ $stop.addEventListener('click', function () {
         StopRec();
         gravando = false;
     }
+
+    atualizaStatus();
 });
 
 $pause.addEventListener('click', function () {
@@ -38,4 +44,20 @@ $pause.addEventListener('click', function () {
         console.log('Pause');
         pause = true;
     }
+
+    atualizaStatus();
 })
+
+function atualizaStatus(){
+
+    let stt = " ";
+    if(gravando){
+        stt = "Gravando";
+
+        if(pause){
+            stt = "Gravação Pausada"
+        }
+    }
+
+    $status.innerHTML = stt;
+}
